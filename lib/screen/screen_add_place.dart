@@ -55,7 +55,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      ImageGetterWidget(),
+                      const ImageGetterWidget(),
                       const Divider(),
                       TextField(
                         decoration: InputDecoration(
