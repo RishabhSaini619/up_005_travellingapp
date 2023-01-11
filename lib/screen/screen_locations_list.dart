@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PlacesListScreen extends StatelessWidget {
-  static const routeName =  'PlacesListScreen';
+  static const routeName = 'PlacesListScreen';
   const PlacesListScreen({Key? key}) : super(key: key);
 
   @override
@@ -13,12 +13,16 @@ class PlacesListScreen extends StatelessWidget {
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add_location_alt_sharp),
+            onPressed: () {
+              Navigator.pushNamed(context, 'AddPlaceScreen');
+            },
+            icon: const Icon(
+              Icons.add_location_alt_sharp,
+            ),
           ),
         ],
       ),
-      body: Center(
+      body: const Center(
         child: CircularProgressIndicator(),
       ),
     );
