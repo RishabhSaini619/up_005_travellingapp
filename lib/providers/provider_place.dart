@@ -1,32 +1,36 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import '../models/model_place.dart';
 import '../helpers/helper_db.dart';
 
 class PlaceProvider with ChangeNotifier {
-  final List<PlaceModel> _items = [
-    PlaceModel(
-      placeId: DateTime.now().toString(),
-      placeName: 'test',
-      placeImage: File(''),
-    ),
-    PlaceModel(
-      placeId: DateTime.now().toString(),
-      placeName: 'test2',
-      placeImage: File(''),
-    ),
-    PlaceModel(
-      placeId: DateTime.now().toString(),
-      placeName: 'test3',
-      placeImage: File(''),
-    ),
+  List<PlaceModel> _items = [
+    // PlaceModel(
+    //   placeId: DateTime.now().toString(),
+    //   placeName: 'test',
+    //   placeImage: File(''),
+    // ),
+    // PlaceModel(
+    //   placeId: DateTime.now().toString(),
+    //   placeName: 'test2',
+    //   placeImage: File(''),
+    // ),
+    // PlaceModel(
+    //   placeId: DateTime.now().toString(),
+    //   placeName: 'test3',
+    //   placeImage: File(''),
+    // ),
   ];
 
   List<PlaceModel> get items {
     return [..._items];
   }
 
-  void addPlace(String newPlaceTitle, File newPlaceImage) {
+  void addPlace(
+    String newPlaceTitle,
+    File newPlaceImage,
+  ) {
     final newPlace = PlaceModel(
       placeId: DateTime.now().toString(),
       placeName: newPlaceTitle,
@@ -35,10 +39,22 @@ class PlaceProvider with ChangeNotifier {
     );
     _items.add(newPlace);
     notifyListeners();
-    DBHelper.insert('places', {
+    DBHelper.insert('user_places', {
       'id': newPlace.placeId,
       'title': newPlace.placeName,
       'image': newPlace.placeImage.path,
     });
+  }
+
+  Future<void> fetchAndSetPlaces() async {
+    final dataList = await DBHelper.getData('user_places');
+    _items = dataList
+        .map((item) => PlaceModel(
+              placeId: item['id'],
+              placeName: item['title'],
+              placeImage: File(item['image']),
+            ))
+        .toList();
+    notifyListeners();
   }
 }
