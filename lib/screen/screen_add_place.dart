@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:up_005_travellingapp/widgets/widget_location_getter.dart';
 import '../providers/provider_place.dart';
 import '../widgets/widget_image_getter.dart';
 
@@ -21,7 +22,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
 
   late AnimationController newPlaceController;
 
-   late File _pickedImage;
+  late File _pickedImage;
 
   void _selectedImage(File pickedImageFile) {
     _pickedImage = pickedImageFile;
@@ -81,8 +82,6 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      ImageGetterWidget(_selectedImage),
-                      const Divider(),
                       TextField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -101,25 +100,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                         keyboardType: TextInputType.text,
                         controller: newPlaceTitleController,
                       ),
-                      const Divider(),
-                      // TextField(
-                      //   decoration: InputDecoration(
-                      //     border: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(15),
-                      //       borderSide: BorderSide(
-                      //         color: Theme.of(context).colorScheme.primary,
-                      //       ),
-                      //     ),
-                      //     // icon: Icon(Icons.abc_sharp),
-                      //     labelText: "Location ",
-                      //     labelStyle: Theme.of(context).textTheme.bodyLarge,
-                      //     hintText: "Product Location ",
-                      //     hintStyle: Theme.of(context).textTheme.bodyMedium,
-                      //   ),
-                      //   textInputAction: TextInputAction.next,
-                      //   keyboardType: TextInputType.text,
-                      //   controller: newPlaceLocationController,
-                      // ),
+                      ImageGetterWidget(_selectedImage),
+                      const LocationGetterWidget(),
                     ],
                   ),
                 ),

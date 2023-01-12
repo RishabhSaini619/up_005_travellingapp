@@ -67,7 +67,7 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
       children: [
         AnimatedContainer(
           height: 200,
-          width: 350,
+          width: 300,
           alignment: Alignment.center,
           duration: const Duration(seconds: 5),
           curve: Curves.elasticOut,
@@ -95,25 +95,34 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                'Pick Image',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const Spacer(),
-              IconButton(
+              TextButton.icon(
                 onPressed: _pickImageFromCamera,
                 icon: Icon(
                   Icons.camera,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
+                label: Text(
+                  'Camera',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.secondary),
+                ),
               ),
-              IconButton(
+              TextButton.icon(
                 onPressed: pickImageFromGallery,
                 icon: Icon(
                   Icons.image,
                   color: Theme.of(context).colorScheme.secondary,
+                ),
+                label: Text(
+                  'Gallery',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
             ],
