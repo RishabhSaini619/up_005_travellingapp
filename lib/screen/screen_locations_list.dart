@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages, prefer_is_empty
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/provider_place.dart';
@@ -36,7 +38,7 @@ class PlacesListScreen extends StatelessWidget {
             placeProviderWidget.items.isEmpty
                 ? customChild!
                 : ListView.builder(
-                    itemCount: placeProviderWidget.items.length,
+                    itemCount: placeProviderWidget.items.length ,
                     itemBuilder: (context, index) => AnimatedContainer(
                       alignment: Alignment.center,
                       duration: const Duration(seconds: 5),

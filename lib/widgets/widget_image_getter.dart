@@ -24,16 +24,16 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
         source: ImageSource.camera, maxHeight: 195, maxWidth: 345);
-    // if (imageFile == null) {
-    //   return;
-    // }
+    if (imageFile == null) {
+      return;
+    }
     setState(() {
-      _storedImage = File(imageFile!.path);
+      _storedImage = File(imageFile.path);
       load = true;
     });
 
     final appDirectory = await system_path.getApplicationDocumentsDirectory();
-    final fileName = path.basename(imageFile!.path);
+    final fileName = path.basename(imageFile.path);
     final savedImage = imageFile.saveTo('${appDirectory.path}/$fileName');
     widget.onSelectedImage(savedImage);
   }
