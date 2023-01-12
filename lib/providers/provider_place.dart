@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import '../models/model_place.dart';
+import '../helpers/helper_db.dart';
 
 class PlaceProvider with ChangeNotifier {
   final List<PlaceModel> _items = [
@@ -34,5 +35,10 @@ class PlaceProvider with ChangeNotifier {
     );
     _items.add(newPlace);
     notifyListeners();
+    DBHelper.insert('places', {
+      'id': newPlace.placeId,
+      'title': newPlace.placeName,
+      'image': newPlace.placeImage.path,
+    });
   }
 }
