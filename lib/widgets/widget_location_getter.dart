@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class LocationGetterWidget extends StatefulWidget {
   const LocationGetterWidget({Key? key}) : super(key: key);
@@ -9,6 +10,13 @@ class LocationGetterWidget extends StatefulWidget {
 
 class _LocationGetterWidgetState extends State<LocationGetterWidget> {
   late String _previewImageUrl;
+
+  Future <void> _getCurrentLocation() async {
+    final locData = await Location().getLocation();
+    print(locData.latitude);
+    print(locData.longitude);
+
+  }
 
   @override
   void initState() {
@@ -24,7 +32,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
           duration: const Duration(seconds: 3),
           curve: Curves.elasticInOut,
           height: 200,
-          width: 300,
+          width: 350,
           decoration: BoxDecoration(
             // color: Colors.amberAccent,
             shape: BoxShape.rectangle,
@@ -61,7 +69,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
                       .bodyMedium!
                       .copyWith(color: Theme.of(context).colorScheme.secondary),
                 ),
-                onPressed: () {},
+                onPressed: _getCurrentLocation,
               ),
               TextButton.icon(
                 icon: Icon(

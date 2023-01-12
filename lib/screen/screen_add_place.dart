@@ -82,23 +82,28 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 1
+                              ),
                             ),
+                            // icon: Icon(Icons.abc_sharp),
+                            labelText: "Title ",
+                            labelStyle: Theme.of(context).textTheme.bodyLarge,
+                            hintText: "Product Title ",
+                            hintStyle: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          // icon: Icon(Icons.abc_sharp),
-                          labelText: "Title ",
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          hintText: "Product Title ",
-                          hintStyle: Theme.of(context).textTheme.bodyMedium,
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          controller: newPlaceTitleController,
                         ),
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        controller: newPlaceTitleController,
                       ),
                       ImageGetterWidget(_selectedImage),
                       const LocationGetterWidget(),

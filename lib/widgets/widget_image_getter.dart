@@ -67,7 +67,7 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
       children: [
         AnimatedContainer(
           height: 200,
-          width: 300,
+          width: 350,
           alignment: Alignment.center,
           duration: const Duration(seconds: 5),
           curve: Curves.elasticOut,
