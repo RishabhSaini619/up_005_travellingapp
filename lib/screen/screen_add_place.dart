@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/provider_place.dart';
 import '../widgets/widget_image_getter.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -14,17 +17,40 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen>
     with SingleTickerProviderStateMixin {
   final newPlaceTitleController = TextEditingController();
-  late AnimationController _controller;
+  // final newPlaceLocationController = TextEditingController();
+
+  late AnimationController newPlaceController;
+
+   late File _pickedImage;
+
+  void _selectedImage(File pickedImageFile) {
+    _pickedImage = pickedImageFile;
+  }
+
+  void _savePlaceButtonFunction() {
+    if (newPlaceTitleController.text.isEmpty) {
+      return;
+    }
+    Provider.of<PlaceProvider>(
+      context,
+      listen: false,
+    ).addPlace(
+      newPlaceTitleController.text,
+      _pickedImage,
+    );
+    Navigator.of(context).pop();
+  }
 
   @override
   void initState() {
+    _pickedImage = File('');
     super.initState();
-    _controller = AnimationController(vsync: this);
+    newPlaceController = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    newPlaceController.dispose();
     super.dispose();
   }
 
@@ -55,7 +81,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      const ImageGetterWidget(),
+                      ImageGetterWidget(_selectedImage),
                       const Divider(),
                       TextField(
                         decoration: InputDecoration(
@@ -76,24 +102,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                         controller: newPlaceTitleController,
                       ),
                       const Divider(),
-                      TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          // icon: Icon(Icons.abc_sharp),
-                          labelText: "Title ",
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          hintText: "Product Title ",
-                          hintStyle: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.text,
-                        controller: newPlaceTitleController,
-                      ),
+                      // TextField(
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(15),
+                      //       borderSide: BorderSide(
+                      //         color: Theme.of(context).colorScheme.primary,
+                      //       ),
+                      //     ),
+                      //     // icon: Icon(Icons.abc_sharp),
+                      //     labelText: "Location ",
+                      //     labelStyle: Theme.of(context).textTheme.bodyLarge,
+                      //     hintText: "Product Location ",
+                      //     hintStyle: Theme.of(context).textTheme.bodyMedium,
+                      //   ),
+                      //   textInputAction: TextInputAction.next,
+                      //   keyboardType: TextInputType.text,
+                      //   controller: newPlaceLocationController,
+                      // ),
                     ],
                   ),
                 ),
@@ -107,10 +133,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                   Icons.save_alt_sharp,
                 ),
                 label: Text(
-                  'Add',
+                  'Add Place',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
-                onPressed: () {},
+                onPressed: _savePlaceButtonFunction,
                 style: ElevatedButton.styleFrom(
                     alignment: Alignment.center,
                     shape: RoundedRectangleBorder(

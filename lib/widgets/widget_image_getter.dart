@@ -7,34 +7,58 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as system_path;
 
 class ImageGetterWidget extends StatefulWidget {
-  const ImageGetterWidget({super.key});
+  final Function onSelectedImage;
+
+  const ImageGetterWidget(this.onSelectedImage);
 
   @override
   State<ImageGetterWidget> createState() => _ImageGetterWidgetState();
 }
 
 class _ImageGetterWidgetState extends State<ImageGetterWidget> {
-  File? storedImage;
-  Future<void> pickImageFromCamera() async {
-    final imageFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, maxHeight: 195, maxWidth: 345);
+  late File _storedImage;
+
+  bool load = false;
+
+  void _pickImageFromCamera() async {
+    final picker = ImagePicker();
+    final imageFile = await picker.pickImage(
+        source: ImageSource.camera, maxHeight: 195, maxWidth: 345);
+    // if (imageFile == null) {
+    //   return;
+    // }
     setState(() {
-      storedImage = File(imageFile!.path);
+      _storedImage = File(imageFile!.path);
+      load = true;
     });
+
     final appDirectory = await system_path.getApplicationDocumentsDirectory();
     final fileName = path.basename(imageFile!.path);
-    final savedImage = await imageFile.saveTo('${appDirectory.path}/$fileName');
+    final savedImage = imageFile.saveTo('${appDirectory.path}/$fileName');
+    widget.onSelectedImage(savedImage);
   }
 
-  Future<void> pickImageFromGallery() async {
-    final imageFile = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, maxHeight: 195, maxWidth: 345);
+  void pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final imageFile = await picker.pickImage(
+        source: ImageSource.gallery, maxHeight: 195, maxWidth: 345);
+    if (imageFile == null) {
+      return;
+    }
     setState(() {
-      storedImage = File(imageFile!.path);
+      _storedImage = File(imageFile.path);
+      load = true;
     });
     final appDirectory = await system_path.getApplicationDocumentsDirectory();
-    final fileName = path.basename(imageFile!.path);
+    final fileName = path.basename(imageFile.path);
     final savedImage = await imageFile.saveTo('${appDirectory.path}/$fileName');
+    widget.onSelectedImage(savedImage);
+  }
+
+  @override
+  void initState() {
+    _storedImage = File('');
+    super.initState();
   }
 
   @override
@@ -42,28 +66,32 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
     return Column(
       children: [
         AnimatedContainer(
-            height: 200,
-            width: 350,
-            alignment: Alignment.center,
-            duration: const Duration(seconds: 5),
-            curve: Curves.elasticOut,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              // color: Colors.amberAccent,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.secondary, width: 1),
-            ),
-            child: storedImage != null
-                ? Container(
-                    margin: const EdgeInsets.all(5),
-                    child: Image.file(
-                      storedImage!,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : const Text('No Image Taken')),
+          height: 200,
+          width: 350,
+          alignment: Alignment.center,
+          duration: const Duration(seconds: 5),
+          curve: Curves.elasticOut,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            // color: Colors.amberAccent,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.secondary, width: 1),
+          ),
+          child: load == true
+              ? Container(
+                  margin: const EdgeInsets.all(5),
+                  child: Image.file(
+                    _storedImage,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : const Text(
+                  'No Image Taken',
+                  textAlign: TextAlign.center,
+                ),
+        ),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -75,7 +103,7 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
               ),
               const Spacer(),
               IconButton(
-                onPressed: pickImageFromCamera,
+                onPressed: _pickImageFromCamera,
                 icon: Icon(
                   Icons.camera,
                   color: Theme.of(context).colorScheme.secondary,
@@ -87,7 +115,7 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
                   Icons.image,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-              )
+              ),
             ],
           ),
         ),
