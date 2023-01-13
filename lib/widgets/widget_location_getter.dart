@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import '../helpers/helper_location.dart';
 
 class LocationGetterWidget extends StatefulWidget {
   const LocationGetterWidget({Key? key}) : super(key: key);
@@ -10,12 +11,18 @@ class LocationGetterWidget extends StatefulWidget {
 
 class _LocationGetterWidgetState extends State<LocationGetterWidget> {
   late String _previewImageUrl;
+  bool _load = false;
 
-  Future <void> _getCurrentLocation() async {
+  Future<void> _getCurrentLocation() async {
     final locData = await Location().getLocation();
-    print(locData.latitude);
-    print(locData.longitude);
-
+    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
+      locationLatitude: locData.latitude!,
+      locationLongitude: locData.longitude!,
+    );
+    setState(() {
+      _previewImageUrl = staticMapImageUrl;
+      _load = true;
+    });
   }
 
   @override
@@ -33,6 +40,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
           curve: Curves.elasticInOut,
           height: 200,
           width: 350,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             // color: Colors.amberAccent,
             shape: BoxShape.rectangle,
@@ -40,16 +48,18 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
             border: Border.all(
                 color: Theme.of(context).colorScheme.secondary, width: 1),
           ),
-          child: _previewImageUrl == null
-              ? Text(
+          child: _load == true
+              ? Container(
+            margin: const EdgeInsets.all(5),
+                child: Image.network(
+                    _previewImageUrl,
+                    fit: BoxFit.cover,
+                  ),
+              )
+              :  Text(
                   'No Location chosen',
-                  style: Theme.of(context).textTheme.displayMedium,
-                  textAlign: TextAlign.center,
-                )
-              : Image.network(
-                  _previewImageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
                 ),
         ),
         Padding(

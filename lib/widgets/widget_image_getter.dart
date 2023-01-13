@@ -87,8 +87,9 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
                     fit: BoxFit.cover,
                   ),
                 )
-              : const Text(
+              : Text(
                   'No Image Taken',
+                  style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
         ),
