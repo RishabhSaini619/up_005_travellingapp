@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 class PlaceModel {
   final String placeId;
   final String placeName;
@@ -20,9 +19,9 @@ class Location {
   final double locationLongitude;
   final String locationAddress;
 
-  Location({
+  const Location(
+    this.locationAddress, {
     required this.locationLatitude,
     required this.locationLongitude,
-    required this.locationAddress,
   });
 }

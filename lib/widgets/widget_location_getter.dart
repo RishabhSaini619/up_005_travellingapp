@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:up_005_travellingapp/screen/screen_map.dart';
 import '../helpers/helper_location.dart';
 
 class LocationGetterWidget extends StatefulWidget {
@@ -23,6 +24,17 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
       _previewImageUrl = staticMapImageUrl;
       _load = true;
     });
+  }
+
+  Future<void> _getSelectedLocation() async {
+    final selectedLocation = await Navigator.of(context).push(MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (ctx) => const MapScreen(
+              isSelectingPlace: true,
+            )));
+    if (selectedLocation == null) {
+      return;
+    }
   }
 
   @override
@@ -50,16 +62,16 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
           ),
           child: _load == true
               ? Container(
-            margin: const EdgeInsets.all(5),
-                child: Image.network(
+                  margin: const EdgeInsets.all(5),
+                  child: Image.network(
                     _previewImageUrl,
                     fit: BoxFit.cover,
                   ),
-              )
-              :  Text(
+                )
+              : Text(
                   'No Location chosen',
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
                 ),
         ),
         Padding(
@@ -93,7 +105,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
                       .bodyMedium!
                       .copyWith(color: Theme.of(context).colorScheme.secondary),
                 ),
-                onPressed: () {},
+                onPressed: _getSelectedLocation,
               ),
             ],
           ),

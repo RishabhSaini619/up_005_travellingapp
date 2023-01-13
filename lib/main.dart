@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:up_005_travellingapp/providers/provider_place.dart';
+import 'package:up_005_travellingapp/screen/screen_map.dart';
 import 'screen/screen_add_place.dart';
 import 'screen/screen_locations_list.dart';
 
@@ -110,11 +111,9 @@ class MyApp extends StatelessWidget {
         //                 : const AuthenticationScreen(),
         //       ),
         routes: {
-        PlacesListScreen.routeName: (ctx) =>
-            const PlacesListScreen(),
-          AddPlaceScreen.routeName: (ctx) =>
-          const AddPlaceScreen(),
-
+          PlacesListScreen.routeName: (ctx) => const PlacesListScreen(),
+          AddPlaceScreen.routeName: (ctx) => const AddPlaceScreen(),
+          MapScreen.routeName: (ctx) => const MapScreen(),
         },
       ),
     );
