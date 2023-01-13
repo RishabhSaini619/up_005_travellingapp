@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/model_place.dart';
@@ -8,7 +10,8 @@ class MapScreen extends StatefulWidget {
   final bool isSelectingPlace;
 
   const MapScreen(
-      {this.initialLocation = const Location(
+      {super.key,
+      this.initialLocation = const Location(
         '0° Center Location',
         locationLatitude: 0.00,
         locationLongitude: 0.00,
@@ -22,9 +25,20 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late LatLng _pickedLocation;
+  bool _isPicking = false;
+
+  void _selectPosition(LatLng position) {
+    setState(() {
+      _pickedLocation = position;
+      _isPicking = true;
+    });
+  }
 
   @override
   void initState() {
+    _pickedLocation = const LatLng(00.00, 00.00);
+     _isPicking = false;
     super.initState();
     _controller = AnimationController(vsync: this);
   }
@@ -41,6 +55,18 @@ class _MapScreenState extends State<MapScreen>
       appBar: AppBar(
         title: const Text('Select on Map'),
         titleTextStyle: Theme.of(context).textTheme.titleMedium,
+        actions: [
+          if (_isPicking == true)
+            IconButton(
+              onPressed: _isPicking != true
+                  ? null
+                  : () {
+                      Navigator.of(context).pop(_pickedLocation);
+
+                    },
+              icon: const Icon(Icons.add_location_sharp),
+            ),
+        ],
       ),
       body: AnimatedContainer(
         alignment: Alignment.center,
@@ -60,9 +86,18 @@ class _MapScreenState extends State<MapScreen>
               widget.initialLocation.locationLatitude,
               widget.initialLocation.locationLongitude,
             ),
-            zoom: 10,
-
+            zoom: 16,
           ),
+          onTap: widget.isSelectingPlace ? _selectPosition : null,
+          markers: _isPicking == true
+              ? {}
+              : {
+                  Marker(
+                    markerId: const MarkerId('id1'),
+                    icon: BitmapDescriptor.defaultMarker,
+                    position: _pickedLocation,
+                  ),
+                }.toSet(),
         ),
       ),
     );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:up_005_travellingapp/screen/screen_map.dart';
+import '../screen/screen_map.dart';
 import '../helpers/helper_location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationGetterWidget extends StatefulWidget {
   const LocationGetterWidget({Key? key}) : super(key: key);
@@ -27,14 +28,16 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
   }
 
   Future<void> _getSelectedLocation() async {
-    final selectedLocation = await Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (ctx) => const MapScreen(
-              isSelectingPlace: true,
-            )));
+    final selectedLocation =
+        await Navigator.of(context).push<LatLng>(MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (ctx) => const MapScreen(
+                  isSelectingPlace: true,
+                )));
     if (selectedLocation == null) {
       return;
     }
+    print('${selectedLocation.longitude} North ${selectedLocation.longitude} East');
   }
 
   @override
@@ -81,7 +84,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
             children: [
               TextButton.icon(
                 icon: Icon(
-                  Icons.location_on_sharp,
+                  Icons.my_location_sharp,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 label: Text(
@@ -95,7 +98,7 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
               ),
               TextButton.icon(
                 icon: Icon(
-                  Icons.map_sharp,
+                  Icons.location_on_sharp,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 label: Text(
