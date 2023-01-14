@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/provider_place.dart';
 import 'screen_add_place.dart';
+import 'screen_place_details.dart';
 
 class PlacesListScreen extends StatelessWidget {
   static const routeName = 'PlacesListScreen';
@@ -73,6 +74,13 @@ class PlacesListScreen extends StatelessWidget {
                                           Theme.of(context).colorScheme.primary,
                                       width: 1),
                                 ),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    PlaceDetailsScreen.routeName,
+                                    arguments: placeProviderWidget
+                                        .items[index].placeId,
+                                  );
+                                },
                                 leading: CircleAvatar(
                                   radius: 50,
                                   backgroundImage: FileImage(placeProviderWidget

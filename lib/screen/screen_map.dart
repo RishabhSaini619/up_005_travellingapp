@@ -81,24 +81,27 @@ class _MapScreenState extends State<MapScreen>
               color: Theme.of(context).colorScheme.secondary, width: 1),
         ),
         child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(
-              widget.initialLocation.locationLatitude,
-              widget.initialLocation.locationLongitude,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                widget.initialLocation.locationLatitude,
+                widget.initialLocation.locationLongitude,
+              ),
+              zoom: 16,
             ),
-            zoom: 16,
-          ),
-          onTap: widget.isSelectingPlace ? _selectPosition : null,
-          markers: _isPicking == true
-              ? {}
-              : {
-                  Marker(
-                    markerId: const MarkerId('id1'),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: _pickedLocation,
-                  ),
-                }
-        ),
+            onTap: widget.isSelectingPlace ? _selectPosition : null,
+            markers: (_isPicking == true && widget.isSelectingPlace == true)
+                ? {}
+                : {
+                    Marker(
+                      markerId: const MarkerId('id1'),
+                      icon: BitmapDescriptor.defaultMarker,
+                      position: _pickedLocation ??
+                          LatLng(
+                            widget.initialLocation.locationLatitude,
+                            widget.initialLocation.locationLongitude,
+                          ),
+                    ),
+                  }),
       ),
     );
   }

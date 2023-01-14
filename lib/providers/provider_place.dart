@@ -5,19 +5,18 @@ import '../helpers/helper_db.dart';
 import '../helpers/helper_location.dart';
 
 class PlaceProvider with ChangeNotifier {
-  List<PlaceModel> _items = [
-
-  ];
+  List<PlaceModel> _items = [];
 
   List<PlaceModel> get items {
     return [..._items];
   }
 
-  Future<void> addPlace(
-    String newPlaceTitle,
-    File newPlaceImage,
-    Location newPlaceLocation,
-  ) async {
+  PlaceModel findByID(String id) {
+    return _items.firstWhere((place) => place.placeId  == id );
+  }
+
+  Future<void> addPlace(String newPlaceTitle, File newPlaceImage,
+      Location newPlaceLocation,) async {
     final newPlaceAddress = await LocationHelper.getLocationAddress(
         newPlaceLocation.locationLatitude, newPlaceLocation.locationLongitude);
     final updatedLocation = Location(

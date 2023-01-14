@@ -5,6 +5,7 @@ import 'package:up_005_travellingapp/providers/provider_place.dart';
 import 'package:up_005_travellingapp/screen/screen_map.dart';
 import 'screen/screen_add_place.dart';
 import 'screen/screen_locations_list.dart';
+import 'screen/screen_place_details.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -99,7 +100,7 @@ class MyApp extends StatelessWidget {
           //   TargetPlatform.android: CustomPageTransitionsBuilder(),
           // }),
         ),
-        home: const PlacesListScreen(),
+        home: const PlaceDetailsScreen(),
         // home:
         // authenticationData.isAuthenticated
         //     ? const ProductsOverviewScreen()
@@ -114,6 +115,7 @@ class MyApp extends StatelessWidget {
           PlacesListScreen.routeName: (ctx) => const PlacesListScreen(),
           AddPlaceScreen.routeName: (ctx) => const AddPlaceScreen(),
           MapScreen.routeName: (ctx) => const MapScreen(),
+          PlaceDetailsScreen.routeName: (ctx) => const PlaceDetailsScreen(),
         },
       ),
     );
