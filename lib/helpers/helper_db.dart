@@ -1,4 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -9,14 +8,22 @@ class DBHelper {
     return sql.openDatabase(
       path.join(dbPath, 'places.db'),
       onCreate: (db, version) {
-        return db.execute(
-            'CREATE TABLE user_places(id TEXT PRIMARY KEY,title TEXT,image TEXT)');
+        return db.execute('CREATE TABLE user_places('
+            'id TEXT PRIMARY KEY,'
+            'title TEXT,'
+            'image TEXT,'
+            'latitude REAL,'
+            'longitude REAL,'
+            'address text)');
       },
       version: 1,
     );
   }
 
-  static Future<void> insert(String table, Map<String, Object> data) async {
+  static Future<void> insert(
+    String table,
+    Map<String, Object> data,
+  ) async {
     final db = await DBHelper.database();
     db.insert(
       table,

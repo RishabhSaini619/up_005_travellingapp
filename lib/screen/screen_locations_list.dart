@@ -75,12 +75,15 @@ class PlacesListScreen extends StatelessWidget {
                                 ),
                                 leading: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: FileImage(
-                                    placeProviderWidget.items[index].placeImage,
-                                  ),
+                                  backgroundImage: FileImage(placeProviderWidget
+                                      .items[index].placeImage),
                                 ),
                                 title: Text(
                                   placeProviderWidget.items[index].placeName,
+                                ),
+                                subtitle: Text(
+                                  placeProviderWidget.items[index].placeLocation
+                                      .locationAddress,
                                 ),
                               ),
                             ),

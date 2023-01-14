@@ -5,7 +5,8 @@ import '../helpers/helper_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationGetterWidget extends StatefulWidget {
-  const LocationGetterWidget({Key? key}) : super(key: key);
+  final Function onSelectedLocation;
+  const LocationGetterWidget(this.onSelectedLocation, {super.key});
 
   @override
   State<LocationGetterWidget> createState() => _LocationGetterWidgetState();
@@ -15,11 +16,10 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
   late String _previewImageUrl;
   bool _load = false;
 
-  Future<void> _getCurrentLocation() async {
-    final locData = await Location().getLocation();
+  void _showLocationPreview(double latitude, double longitude) {
     final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
-      locationLatitude: locData.latitude!,
-      locationLongitude: locData.longitude!,
+      locationLatitude: latitude,
+      locationLongitude: longitude,
     );
     setState(() {
       _previewImageUrl = staticMapImageUrl;
@@ -27,22 +27,46 @@ class _LocationGetterWidgetState extends State<LocationGetterWidget> {
     });
   }
 
-  Future<void> _getSelectedLocation() async {
-    final selectedLocation =
-        await Navigator.of(context).push<LatLng>(MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (ctx) => const MapScreen(
-                  isSelectingPlace: true,
-                )));
-    if (selectedLocation == null) {
-      return;
+  Future<void> _getCurrentLocation() async {
+    try {
+      final locData = await Location().getLocation();
+      _showLocationPreview(locData.latitude!, locData.longitude!);
+      widget.onSelectedLocation(locData.latitude, locData.longitude);
+      print('Location : \n'
+          ' North ${locData.longitude} \n'
+          ' East ${locData.longitude}');
+    } catch (error) {
+      return print('error accrued while _getCurrentLocation');
     }
-    print('${selectedLocation.longitude} North ${selectedLocation.longitude} East');
+  }
+
+  Future<void> _getSelectedLocation() async {
+    try {
+      final selectedLocation =
+          await Navigator.of(context).push<LatLng>(MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (ctx) => const MapScreen(
+                    isSelectingPlace: true,
+                  )));
+      if (selectedLocation == null) {
+        return;
+      }
+      _showLocationPreview(
+          selectedLocation.latitude, selectedLocation.longitude);
+      widget.onSelectedLocation(
+          selectedLocation.latitude, selectedLocation.longitude);
+      print('Location : \n'
+          ' North ${selectedLocation.longitude} \n'
+          ' East ${selectedLocation.longitude}');
+    } catch (error) {
+      return print('error accrued while _getCurrentLocation');
+    }
   }
 
   @override
   void initState() {
     _previewImageUrl = '';
+    _load = false;
     super.initState();
   }
 

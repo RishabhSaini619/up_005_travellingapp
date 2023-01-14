@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:up_005_travellingapp/models/model_place.dart';
 import 'package:up_005_travellingapp/widgets/widget_location_getter.dart';
 import '../providers/provider_place.dart';
 import '../widgets/widget_image_getter.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = 'AddPlaceScreen';
-
   const AddPlaceScreen({super.key});
 
   @override
@@ -18,18 +18,26 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen>
     with SingleTickerProviderStateMixin {
   final newPlaceTitleController = TextEditingController();
-  // final newPlaceLocationController = TextEditingController();
-
   late AnimationController newPlaceController;
-
   late File _pickedImage;
+  late Location _pickedLocation;
 
   void _selectedImage(File pickedImageFile) {
     _pickedImage = pickedImageFile;
   }
 
+  void _selectedLocation(double lan, double lng) {
+    _pickedLocation = Location(
+      locationAddress: "",
+      locationLatitude: lan,
+      locationLongitude: lng,
+    );
+  }
+
   void _savePlaceButtonFunction() {
-    if (newPlaceTitleController.text.isEmpty) {
+    if (newPlaceTitleController.text.isEmpty ||
+        _pickedImage == null ||
+        _pickedLocation == null) {
       return;
     }
     Provider.of<PlaceProvider>(
@@ -38,6 +46,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
     ).addPlace(
       newPlaceTitleController.text,
       _pickedImage,
+      _pickedLocation,
     );
     Navigator.of(context).pop();
   }
@@ -86,19 +95,29 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                         padding: const EdgeInsets.all(10.0),
                         child: TextField(
                           decoration: InputDecoration(
-
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 1
-                              ),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  width: 1),
                             ),
                             // icon: Icon(Icons.abc_sharp),
                             labelText: "Title ",
-                            labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            labelStyle: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                             hintText: "Product Title ",
-                            hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                           ),
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.text,
@@ -106,7 +125,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen>
                         ),
                       ),
                       ImageGetterWidget(_selectedImage),
-                      const LocationGetterWidget(),
+                      LocationGetterWidget(_selectedLocation),
                     ],
                   ),
                 ),

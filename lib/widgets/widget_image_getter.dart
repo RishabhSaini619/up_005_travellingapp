@@ -1,5 +1,4 @@
 // ignore_for_file: depend_on_referenced_packages
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +8,7 @@ import 'package:path_provider/path_provider.dart' as system_path;
 class ImageGetterWidget extends StatefulWidget {
   final Function onSelectedImage;
 
-  const ImageGetterWidget(this.onSelectedImage);
+  const ImageGetterWidget(this.onSelectedImage, {super.key});
 
   @override
   State<ImageGetterWidget> createState() => _ImageGetterWidgetState();
@@ -23,7 +22,10 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
   void _pickImageFromCamera() async {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
-        source: ImageSource.camera, maxHeight: 195, maxWidth: 345);
+      source: ImageSource.camera,
+      maxHeight: 195,
+      maxWidth: 345,
+    );
     if (imageFile == null) {
       return;
     }
@@ -58,6 +60,7 @@ class _ImageGetterWidgetState extends State<ImageGetterWidget> {
   @override
   void initState() {
     _storedImage = File('');
+    load = false;
     super.initState();
   }
 

@@ -9,14 +9,15 @@ class MapScreen extends StatefulWidget {
   final Location initialLocation;
   final bool isSelectingPlace;
 
-  const MapScreen(
-      {super.key,
-      this.initialLocation = const Location(
-        '0° Center Location',
-        locationLatitude: 0.00,
-        locationLongitude: 0.00,
-      ),
-      this.isSelectingPlace = false});
+  const MapScreen({
+    super.key,
+    this.initialLocation = const Location(
+      locationAddress: '0° Center Location',
+      locationLatitude: 0.00,
+      locationLongitude: 0.00,
+    ),
+    this.isSelectingPlace = false,
+  });
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -38,7 +39,7 @@ class _MapScreenState extends State<MapScreen>
   @override
   void initState() {
     _pickedLocation = const LatLng(00.00, 00.00);
-     _isPicking = false;
+    _isPicking = false;
     super.initState();
     _controller = AnimationController(vsync: this);
   }
@@ -62,7 +63,6 @@ class _MapScreenState extends State<MapScreen>
                   ? null
                   : () {
                       Navigator.of(context).pop(_pickedLocation);
-
                     },
               icon: const Icon(Icons.add_location_sharp),
             ),
@@ -97,7 +97,7 @@ class _MapScreenState extends State<MapScreen>
                     icon: BitmapDescriptor.defaultMarker,
                     position: _pickedLocation,
                   ),
-                }.toSet(),
+                }
         ),
       ),
     );
