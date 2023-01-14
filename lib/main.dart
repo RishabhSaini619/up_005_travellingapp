@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
           //   TargetPlatform.android: CustomPageTransitionsBuilder(),
           // }),
         ),
-        home: const PlaceDetailsScreen(),
+        home: const PlacesListScreen(),
         // home:
         // authenticationData.isAuthenticated
         //     ? const ProductsOverviewScreen()
